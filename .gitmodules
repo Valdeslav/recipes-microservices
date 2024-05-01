@@ -1,0 +1,12 @@
+[submodule "Order-Service"]
+	path = Order-Service
+	url = git@github.com:Valdeslav/Order-Service.git
+[submodule "Product-Service"]
+	path = Product-Service
+	url = git@github.com:Valdeslav/Product-Service.git
+[submodule "Recipe-Service"]
+	path = Recipe-Service
+	url = git@github.com:Valdeslav/Recipe-Service.git
+[submodule "User-Service"]
+	path = User-Service
+	url = git@github.com:Valdeslav/User-Service.git
