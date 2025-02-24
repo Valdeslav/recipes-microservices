@@ -1,0 +1,112 @@
+version: '2'
+
+services:
+  # User Service
+  user_app:
+    image: 'user-service:latest'
+    build:
+      context: ./User-Service
+      dockerfile: ./docker/Dockerfile
+    container_name: user_app
+    depends_on:
+      - user_db
+    env_file:
+      - ./User-Service/docker/.env
+    ports:
+      - "8080:8080"
+      - "5005:5005"
+
+  user_db:
+    image: 'postgres:13.1-alpine'
+    container_name: user_db
+    env_file:
+      - ./User-Service/docker/.env
+    volumes:
+      - ./User-Service/src/main/resources/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - user-db-data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  # Order Service
+  order_app:
+    image: 'order-service:latest'
+    build:
+      context: ./Order-Service
+      dockerfile: ./docker/Dockerfile
+    container_name: order_app
+    depends_on:
+      - order_db
+    env_file:
+      - ./Order-Service/docker/.env
+    ports:
+      - "8081:8080"
+      - "5006:5005"
+
+  order_db:
+    image: 'postgres:13.1-alpine'
+    container_name: order_db
+    env_file:
+      - ./Order-Service/docker/.env
+    volumes:
+      - ./Order-Service/src/main/resources/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - order-db-data:/var/lib/postgresql/data
+    ports:
+      - "5433:5432"
+
+  # Product Service
+  product_app:
+    image: 'product-service:latest'
+    build:
+      context: ./Product-Service
+      dockerfile: ./docker/Dockerfile
+    container_name: product_app
+    depends_on:
+      - product_db
+    env_file:
+      - ./Product-Service/docker/.env
+    ports:
+      - "8082:8080"
+      - "5007:5005"
+
+  product_db:
+    image: 'postgres:13.1-alpine'
+    container_name: product_db
+    env_file:
+      - ./Product-Service/docker/.env
+    volumes:
+      - ./Product-Service/src/main/resources/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - product-db-data:/var/lib/postgresql/data
+    ports:
+      - "5434:5432"
+
+  # Recipe Service
+  recipe_app:
+    image: 'recipe-service:latest'
+    build:
+      context: ./Recipe-Service
+      dockerfile: ./docker/Dockerfile
+    container_name: recipe_app
+    depends_on:
+      - recipe_db
+    env_file:
+      - ./Recipe-Service/docker/.env
+    ports:
+      - "8083:8080"
+      - "5008:5005"
+
+  recipe_db:
+    image: 'postgres:13.1-alpine'
+    container_name: recipe_db
+    env_file:
+      - ./Recipe-Service/docker/.env
+    volumes:
+      - ./Recipe-Service/src/main/resources/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - recipe-db-data:/var/lib/postgresql/data
+    ports:
+      - "5435:5432"
+
+volumes:
+  user-db-data:
+  order-db-data:
+  product-db-data:
+  recipe-db-data: 
